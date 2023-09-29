@@ -3,6 +3,9 @@ Follows Kohi game engine dev series provided by
 
 
 ## Build Environment (For Windows and Linux only)
+- Install CMake:
+    - [FileSet headers usage sample](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#interface-libraries)
+    - [Discussion](https://gitlab.kitware.com/cmake/cmake/-/issues/22468)
 - Install Clang
     - Windows: Use Visual Studio Installer and type Clang to install the required packages
         - Navigate to C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build and run `vcvarsall.bat x64`
@@ -18,14 +21,19 @@ sudo ./llvm.sh <version number>
 # Check installation by running `clang-16 --version` or `clang++-16 --version` 
 ```
 
-- Install Vulkan SDK:
-    - Visit vulkan.lunarg.com to download the sdk.
-    - Windows: Make sure %VULKAN_SDK% environment is set.
+- Install Vulkan SDK: Vulkan can be installed using different ways
+    1. Manual installation:
+         - Visit vulkan.lunarg.com to download the sdk.
+         - Windows: Make sure %VULKAN_SDK% environment is set.
     - Linux:
         - Download the tar.xz file
         - Follow `Install SDK` section [here](https://vulkan.lunarg.com/doc/view/1.3.261.1/linux/getting_started.html)
         - Adjust the environment variables
 > On my Ubuntu system: There is no way to persist derived environment variables system-wide from `VULKAN_SDK`. You might have to run `source /opt/vulkan/1.3.261.1/setup-env.sh` after each login. `VULKAN_SDK`is set using `/etc/environment` but the other env variables can NOT be set using the same method.
+    - CMake - `FetchContent` module
+        - https://stackoverflow.com/questions/69144529/vulkan-hpp-with-cmake
+        - https://github.com/KhronosGroup/Vulkan-Headers/issues/157
+        - https://github.com/KhronosGroup/Vulkan-Headers/pull/318
 
 - [Linux Only]: 
     - For windowing: `sudo apt-get install libx11-dev libx11-xcb-dev libxkbcommon-x11-dev`
