@@ -44,3 +44,6 @@ sudo ./llvm.sh <version number>
         - Shader Languages Support (slevesque.shader) [Optional]
     - c_cpp_properties.json:
         - windows_sdk[optional]: To find which Windows sdk is used, it might be located under `Windows Kits\10\Include\<version>`
+
+## Notes
+- `include <assert.h>` is required for `_Static_assert keyword` or `static_assert macro` for stdc11 or higher. No longer needed since C/C++ 23. [ref1](https://en.cppreference.com/w/c/language/_Static_assert) - [ref2](https://learn.microsoft.com/en-us/cpp/c-language/static-assert-c?view=msvc-170)
