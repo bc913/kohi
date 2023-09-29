@@ -1,4 +1,6 @@
 #pragma once
+// Required for static_assert and _Static_assert in stdc11 or higher until c23
+#include <assert.h>
 
 // Unsigned int types.
 typedef unsigned char u8;
