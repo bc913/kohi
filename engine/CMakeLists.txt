@@ -4,14 +4,15 @@ add_library(${PROJECT_NAME} SHARED "")
 
 target_sources(${PROJECT_NAME}
     PRIVATE
-        src/test.c
+        src/core/logger.c
     PUBLIC
         FILE_SET ${PROJECT_NAME}_header_files 
         TYPE HEADERS
         BASE_DIRS src
         FILES
             src/defines.h
-            src/test.h
+            src/core/logger.h
+            src/core/asserts.h
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE Vulkan::Headers)
