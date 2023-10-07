@@ -1,0 +1,23 @@
+{
+    "Multiple Inclusion Guard": {
+        "scope": "c, cpp",
+        "prefix": "mig",
+        "body": [
+            "#ifndef KOHI_${CURRENT_SECONDS_UNIX}_${TM_FILENAME_BASE/(.*)/${1:/upcase}/}_H",
+            "#define KOHI_${CURRENT_SECONDS_UNIX}_${TM_FILENAME_BASE/(.*)/${1:/upcase}/}_H",
+            "$0",
+            "#endif"
+        ],
+        "description": "Insert multiple inclusion guard"
+    },
+    "ifndef block": {
+        "scope": "c, cpp",
+        "prefix": "bcifnd",
+        "body": [
+            "#ifndef ${1:OBJ_MACRO}",
+            "# define ${0:MACRO}",
+            "#endif"
+        ],
+        "description": "Insert ifndef block with define"
+    }
+}
