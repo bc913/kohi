@@ -65,7 +65,7 @@
                 "command": "${workspaceFolder}/bin/testbed",
             },
             "options": {
-                "cwd": "${workspaceFolder}"
+                "cwd": "${workspaceFolder}/bin"
             },
             "group": {
                 "kind": "test",
