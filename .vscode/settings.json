@@ -1,6 +1,6 @@
 {
     "xmlTools.enforcePrettySelfClosingTagOnFormat": true,
-    "editor.minimap.enabled": false,
+    // workbench
     "workbench.editor.showTabs": true,
     "workbench.activityBar.visible": true,
     "workbench.colorCustomizations": {
@@ -8,21 +8,29 @@
         "editor.lineHighlightBackground": "#111144"
     },
     "workbench.statusBar.visible": true,
+    // editor
+    "editor.minimap.enabled": false,
     "editor.lineNumbers": "on",
+    "editor.cursorStyle": "line",
+    "editor.cursorWidth": 3,
+    "editor.tabCompletion": "on",
+    "editor.formatOnSave": true,
+    // Cmake
+    "cmake.useCMakePresets": "always",
+    "cmake.buildBeforeRun": false,
+    "cmake.configureOnEdit": false,
+    "cmake.configureOnOpen": false,
+    // clang-format
     "C_Cpp.clang_format_style": "{ BasedOnStyle: Google, IndentWidth: 4, ColumnLimit: 0, NamespaceIndentation: All}",
+    // vcformat
     "C_Cpp.vcFormat.newLine.beforeOpenBrace.block": "sameLine",
     "C_Cpp.vcFormat.newLine.beforeOpenBrace.type": "sameLine",
     "C_Cpp.vcFormat.newLine.beforeOpenBrace.function": "sameLine",
     "C_Cpp.vcFormat.space.pointerReferenceAlignment": "left",
     "C_Cpp.clang_format_sortIncludes": false,
     "C_Cpp.vcFormat.indent.namespaceContents": true,
-    "cmake.useCMakePresets": "always",
-    "cmake.buildBeforeRun": false,
-    "cmake.configureOnEdit": false,
-    "cmake.configureOnOpen": false,
-    "editor.cursorStyle": "block",
+    // Window    
     "window.zoomLevel": 0,
-    "editor.tabCompletion": "on",
     "todohighlight.isEnable": true,
     "todohighlight.keywords": [
         {
@@ -47,6 +55,8 @@
         "overviewRulerColor": "rgba(0,0,0,0)",
         "isWholeLine": false,
     },
+    // Files
+    "files.eol": "auto",
     "files.associations": {
         "test.h": "c",
         "vulkan.h": "c",
