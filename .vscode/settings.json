@@ -1,8 +1,7 @@
 {
     "xmlTools.enforcePrettySelfClosingTagOnFormat": true,
     // workbench
-    "workbench.editor.showTabs": true,
-    "workbench.activityBar.visible": true,
+    "workbench.editor.showTabs": "multiple",
     "workbench.colorCustomizations": {
         "editorCursor.foreground": "#00ff33",
         "editor.lineHighlightBackground": "#111144"
