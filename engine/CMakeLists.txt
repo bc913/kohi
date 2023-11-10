@@ -1,8 +1,16 @@
-project(kohi_engine)
-
+project(kohi_engine LANGUAGES C)
 add_library(${PROJECT_NAME} SHARED "")
 
+# https://gitlab.kitware.com/cmake/community/-/wikis/doc/tutorials/How-To-Write-Platform-Checks
+# https://cmake.org/cmake/help/latest/variable/CMAKE_LANG_COMPILER_ID.html
+# $<$<AND:$<PLATFORM_ID:Windows>,$<CXX_COMPILER_ID:MSVC>>:
+    #     src/platform/platform_win32.c
+    # >
+
+# ----------
 # Core
+# ----------
+
 set(_CORE_HEADER_FILES)
 list(APPEND _CORE_HEADER_FILES
         src/core/logger.h
@@ -14,9 +22,22 @@ list(APPEND _CORE_SOURCE_FILES
     src/core/logger.c
 )
 
+# ----------
+# Platform
+# ----------
+set(_PLATFORM_HEADER_FILES)
+list(APPEND _PLATFORM_HEADER_FILES
+    src/platform/platform.h
+)
+set(_PLATFORM_SOURCE_FILES)
+list(APPEND _PLATFORM_SOURCE_FILES
+    src/platform/platform_win32.c
+)
+
 target_sources(${PROJECT_NAME}
     PRIVATE
         ${_CORE_SOURCE_FILES}
+        ${_PLATFORM_SOURCE_FILES}
     PUBLIC
         FILE_SET ${PROJECT_NAME}_header_files 
         TYPE HEADERS
@@ -24,14 +45,22 @@ target_sources(${PROJECT_NAME}
         FILES
             src/defines.h 
             ${_CORE_HEADER_FILES}
+            ${_PLATFORM_HEADER_FILES}
 )
+
+# ----------
+# Definitions
+# ----------
 
 target_link_libraries(${PROJECT_NAME} PRIVATE Vulkan::Headers)
 message(STATUS "Vulkan Headers Version: ${VulkanHeaders_VERSION}")
 
 target_compile_definitions(
     ${PROJECT_NAME} 
-    PUBLIC "KEXPORT"
+    PUBLIC 
+        KEXPORT
+    PRIVATE
+        $<$<PLATFORM_ID:Windows>: KPLATFORM_WINDOWS> # not required since 
 )
 
 install(
