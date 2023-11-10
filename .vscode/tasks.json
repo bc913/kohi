@@ -54,6 +54,28 @@
                 "kind": "build",
                 "isDefault": true
             }
+        },
+        {
+            "type": "shell",
+            "label": "Run w/o debugging",
+            "windows": {
+                "command": "${workspaceFolder}/bin/testbed.exe",
+            },
+            "linux": {
+                "command": "${workspaceFolder}/bin/testbed",
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/bin"
+            },
+            "group": {
+                "kind": "test",
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "new",
+                "focus": true,
+                "revealProblems": "onProblem"
+            }
         }
     ],
     "version": "2.0.0"

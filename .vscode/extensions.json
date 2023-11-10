@@ -3,6 +3,7 @@
         "ms-vscode.cpptools",
         "tomphilbin.gruvbox-themes",
         "wayou.vscode-todo-highlight",
+        "Gruntfuggly.todo-tree",
         "slevesque.shader",
         "ms-vscode.cmake-tools"
     ]
