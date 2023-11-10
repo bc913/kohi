@@ -92,4 +92,4 @@ KAPI void log_output(log_level level, const char* message, ...);
 #define KTRACE(message, ...)
 #endif
 
-#endif
+#endif  // KOHI_1696173210_LOGGER_H

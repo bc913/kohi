@@ -7,11 +7,12 @@
 // Cross-platform impl for debug
 https://github.com/scottt/debugbreak/blob/master/debugbreak.h
 */
-// comment out to disable assertions
 
+// comment out to disable assertions
 #define KASSERTIONS_ENABLED
 
 #ifdef KASSERTIONS_ENABLED
+
 #if _MSC_VER
 // TODO: This works for now
 // #include <intrin.h>
@@ -51,7 +52,7 @@ KAPI void report_assertion_failure(const char* expression, const char* message, 
     }
 #else                        //_DEBUG
 #define KASSERT_DEBUG(expr)  // Does nothing at all
-#endif
+#endif                       //_DEBUG
 
 #else                               // KASSERTIONS_ENABLED
 #define KASSERT(expr)               // Does nothing at all
@@ -59,4 +60,4 @@ KAPI void report_assertion_failure(const char* expression, const char* message, 
 #define KASSERT_DEBUG(expr)         // Does nothing at all
 #endif
 
-#endif
+#endif  // KOHI_1696707785_ASSERTS_H
