@@ -6,7 +6,7 @@
 #include "core/logger.h"
 
 #include <windows.h>
-#include <windowsx.h>  // param input extraction
+#include <windowsx.h>  // param input extraction, i.e. WPARAM, LPARAM
 #include <stdlib.h>
 
 typedef struct internal_state {
@@ -36,8 +36,8 @@ b8 platform_startup(
     HICON icon = LoadIcon(state->h_instance, IDI_APPLICATION);
     WNDCLASSA wc;
     memset(&wc, 0, sizeof(wc));
-    wc.style = CS_DBLCLKS;  // Get double-clicks
-    wc.lpfnWndProc = win32_process_message;
+    wc.style = CS_DBLCLKS;                   // Get double-clicks
+    wc.lpfnWndProc = win32_process_message;  // ptr to window procedures
     wc.cbClsExtra = 0;
     wc.cbWndExtra = 0;
     wc.hInstance = state->h_instance;
@@ -89,7 +89,7 @@ b8 platform_startup(
     if (handle == 0) {
         MessageBoxA(NULL, "Window creation failed!", "Error!", MB_ICONEXCLAMATION | MB_OK);
 
-        KTRACE("A test message%f", 0.0);
+        KTRACE("Window creation failed.", 45);
         return FALSE;
     } else {
         state->hwnd = handle;
@@ -122,7 +122,10 @@ void platform_shutdown(platform_state *plat_state) {
 }
 
 b8 platform_pump_messages(platform_state *plat_state) {
-    MSG message;
+    MSG message;  // windows have stack of messages and we have to process each of them at a time.
+    // We have to keep clear message queue otherwise the window will unresponsive.
+    // if there is message at the top of the queue assign it to the message object and
+    // move on the next one until there is no message left in windows message queue.
     while (PeekMessageA(&message, NULL, 0, 0, PM_REMOVE)) {
         TranslateMessage(&message);
         DispatchMessageA(&message);
@@ -153,12 +156,14 @@ void *platform_set_memory(void *dest, i32 value, u64 size) {
 
 void platform_console_write(const char *message, u8 colour) {
     HANDLE console_handle = GetStdHandle(STD_OUTPUT_HANDLE);
-    // FATAL,ERROR,WARN,INFO,DEBUG,TRACE
+    //                     FATAL, ERROR, WARN, INFO, DEBUG, TRACE
     static u8 levels[6] = {64, 4, 6, 2, 1, 8};
     SetConsoleTextAttribute(console_handle, levels[colour]);
-    OutputDebugStringA(message);
+    OutputDebugStringA(message);  // different sepearate output stream
+
     u64 length = strlen(message);
-    LPDWORD number_written = 0;
+    LPDWORD number_written = 0;  // number of bytes written
+    // it writes to debug and command console.
     WriteConsoleA(GetStdHandle(STD_OUTPUT_HANDLE), message, (DWORD)length, number_written, 0);
 }
 
@@ -173,10 +178,11 @@ void platform_console_write_error(const char *message, u8 colour) {
     WriteConsoleA(GetStdHandle(STD_ERROR_HANDLE), message, (DWORD)length, number_written, 0);
 }
 
+// time in s
 f64 platform_get_absolute_time() {
     LARGE_INTEGER now_time;
-    QueryPerformanceCounter(&now_time);
-    return (f64)now_time.QuadPart * clock_frequency;
+    QueryPerformanceCounter(&now_time);               // number of cycles since the app started
+    return (f64)now_time.QuadPart * clock_frequency;  // get the actual time
 }
 
 void platform_sleep(u64 ms) {
@@ -236,7 +242,7 @@ LRESULT CALLBACK win32_process_message(HWND hwnd, u32 msg, WPARAM w_param, LPARA
             //  TODO: input processing.
         } break;
     }
-
+    // default window procedure
     return DefWindowProcA(hwnd, msg, w_param, l_param);
 }
 

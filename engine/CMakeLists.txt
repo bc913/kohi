@@ -7,6 +7,8 @@ add_library(${PROJECT_NAME} SHARED "")
     #     src/platform/platform_win32.c
     # >
 
+
+# https://cmake.org/cmake/help/latest/manual/cmake-generator-expressions.7.html#genex:COMPILE_LANGUAGE
 # ----------
 # Core
 # ----------
@@ -59,8 +61,8 @@ target_compile_definitions(
     ${PROJECT_NAME} 
     PUBLIC 
         KEXPORT
-    PRIVATE
-        $<$<PLATFORM_ID:Windows>: KPLATFORM_WINDOWS> # not required since 
+    # PRIVATE
+    #     $<$<PLATFORM_ID:Windows>: KPLATFORM_WINDOWS> # not required since 
 )
 
 install(
