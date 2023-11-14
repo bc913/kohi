@@ -13,6 +13,10 @@ add_library(${PROJECT_NAME} SHARED "")
 # Core
 # ----------
 
+if(UNIX)
+    find_package(X11 REQUIRED) # FindX11
+endif()
+
 set(_CORE_HEADER_FILES)
 list(APPEND _CORE_HEADER_FILES
         src/core/logger.h
@@ -34,6 +38,7 @@ list(APPEND _PLATFORM_HEADER_FILES
 set(_PLATFORM_SOURCE_FILES)
 list(APPEND _PLATFORM_SOURCE_FILES
     src/platform/platform_win32.c
+    src/platform/platform_linux.c
 )
 
 target_sources(${PROJECT_NAME}
@@ -54,14 +59,24 @@ target_sources(${PROJECT_NAME}
 # Definitions
 # ----------
 
-target_link_libraries(${PROJECT_NAME} PRIVATE Vulkan::Headers)
+target_link_libraries(${PROJECT_NAME} 
+                            PRIVATE
+                                Vulkan::Headers
+                                $<$<PLATFORM_ID:Linux>:
+                                    xcb
+                                    X11
+                                    X11-xcb
+                                    # ${X11_LIBRARIES} xcb # to stay in the safe side
+                                >
+)
 message(STATUS "Vulkan Headers Version: ${VulkanHeaders_VERSION}")
 
 target_compile_definitions(
     ${PROJECT_NAME} 
     PUBLIC 
         KEXPORT
-    # PRIVATE
+    PRIVATE
+        $<$<PLATFORM_ID:Linux>: _POSIX_C_SOURCE=199309L> # CLOCK_MONOTONIC
     #     $<$<PLATFORM_ID:Windows>: KPLATFORM_WINDOWS> # not required since 
 )
 
