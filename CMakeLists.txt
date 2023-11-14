@@ -13,6 +13,11 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_VISIBILITY_PRESET "hidden")
 set(CMAKE_VISIBILITY_INLINES_HIDDEN ON)
 
+# Global compiler settings
+# if(MSVC)
+#     add_compile_options(/Zc:preprocessor) # for __VA_ARGS__ handling
+# endif()
+
 add_subdirectory(external)
 add_subdirectory(engine)
 add_subdirectory(testbed)
