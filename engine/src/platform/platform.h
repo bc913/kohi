@@ -7,6 +7,7 @@ typedef struct platform_state {
     void* internal_state;
 } platform_state;
 
+// TODO: client should not see this methods keep it for now.
 KAPI b8 platform_startup(
     platform_state* plat_state,
     const char* application_name,
@@ -15,9 +16,9 @@ KAPI b8 platform_startup(
     i32 width,
     i32 height);
 
-// Will be called within the app main loop
 KAPI void platform_shutdown(platform_state* plat_state);
 
+// Will be called within the app loop
 KAPI b8 platform_pump_messages(platform_state* plat_state);
 
 // Memory
@@ -30,7 +31,8 @@ void* platform_set_memory(void* dest, i32 value, u64 size);
 void platform_console_write(const char* message, u8 colour);
 void platform_console_write_error(const char* message, u8 colour);
 // Time
-f64 platform_get_absolute_time();
+// Since application has actually been running
+f64 platform_get_absolute_time();  // time in secs
 
 // Sleep on the thread for the provided ms. This blocks the main thread.
 // Should only be used for giving time back to the OS for unused update power.
