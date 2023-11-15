@@ -1,6 +1,26 @@
 project(kohi_testbed)
 add_executable(${PROJECT_NAME} "")
-target_sources(${PROJECT_NAME} PRIVATE src/main.c)
+
+set(_TESTBED_HEADER_FILES)
+list(APPEND _TESTBED_HEADER_FILES
+    src/game.h
+)
+
+set(_TESTBED_SOURCE_FILES)
+list(APPEND _TESTBED_SOURCE_FILES
+    src/entry.c
+    src/game.c
+)
+target_sources(${PROJECT_NAME} 
+                    PRIVATE
+                        ${_TESTBED_SOURCE_FILES}
+                    PUBLIC
+                        FILE_SET ${PROJECT_NAME}_header_files 
+                        TYPE HEADERS
+                        BASE_DIRS src
+                        FILES
+                            ${_TESTBED_HEADER_FILES}
+)
 
 # Dependent shared libs
 set(_SHARED_LIBS)
@@ -29,5 +49,5 @@ install(
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-    #PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    FILE_SET ${PROJECT_NAME}_header_files DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )

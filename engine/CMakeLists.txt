@@ -21,11 +21,13 @@ set(_CORE_HEADER_FILES)
 list(APPEND _CORE_HEADER_FILES
         src/core/logger.h
         src/core/asserts.h
+        src/core/application.h
 )
 
 set(_CORE_SOURCE_FILES)
 list(APPEND _CORE_SOURCE_FILES
     src/core/logger.c
+    src/core/application.c
 )
 
 # ----------
@@ -50,7 +52,9 @@ target_sources(${PROJECT_NAME}
         TYPE HEADERS
         BASE_DIRS src
         FILES
-            src/defines.h 
+            src/defines.h
+            src/entry.h
+            src/game_types.h
             ${_CORE_HEADER_FILES}
             ${_PLATFORM_HEADER_FILES}
 )
