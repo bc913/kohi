@@ -23,6 +23,7 @@ list(APPEND _CORE_HEADER_FILES
         src/core/asserts.h
         src/core/application.h
         src/core/kmemory.h
+        src/core/event.h
 )
 
 set(_CORE_SOURCE_FILES)
@@ -30,6 +31,7 @@ list(APPEND _CORE_SOURCE_FILES
     src/core/logger.c
     src/core/application.c
     src/core/kmemory.c
+    src/core/event.c
 )
 
 # ----------
@@ -45,10 +47,24 @@ list(APPEND _PLATFORM_SOURCE_FILES
     src/platform/platform_linux.c
 )
 
+# ----------
+# Containers
+# ----------
+set(_CONTAINERS_HEADER_FILES)
+list(APPEND _CONTAINERS_HEADER_FILES
+    src/containers/darray.h
+)
+
+set(_CONTAINERS_SOURCE_FILES)
+list(APPEND _CONTAINERS_SOURCE_FILES
+    src/containers/darray.c
+)
+
 target_sources(${PROJECT_NAME}
     PRIVATE
         ${_CORE_SOURCE_FILES}
         ${_PLATFORM_SOURCE_FILES}
+        ${_CONTAINERS_SOURCE_FILES}
     PUBLIC
         FILE_SET ${PROJECT_NAME}_header_files 
         TYPE HEADERS
@@ -59,6 +75,7 @@ target_sources(${PROJECT_NAME}
             src/game_types.h
             ${_CORE_HEADER_FILES}
             ${_PLATFORM_HEADER_FILES}
+            ${_CONTAINERS_HEADER_FILES}
 )
 
 # ----------
