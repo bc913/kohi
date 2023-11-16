@@ -22,12 +22,14 @@ list(APPEND _CORE_HEADER_FILES
         src/core/logger.h
         src/core/asserts.h
         src/core/application.h
+        src/core/kmemory.h
 )
 
 set(_CORE_SOURCE_FILES)
 list(APPEND _CORE_SOURCE_FILES
     src/core/logger.c
     src/core/application.c
+    src/core/kmemory.c
 )
 
 # ----------

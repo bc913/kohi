@@ -4,6 +4,7 @@
 #include "logger.h"
 
 #include "platform/platform.h"
+#include "core/kmemory.h"
 
 typedef struct application_state {
     game* game_inst;
@@ -67,6 +68,8 @@ b8 application_create(game* game_inst) {
 }
 
 b8 application_run() {
+    KINFO(get_memory_usage_str(), 0);
+
     while (app_state.is_running) {
         // if for any reason pump_messages returns false, just leave.
         if (!platform_pump_messages(&app_state.platform)) {

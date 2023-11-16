@@ -48,3 +48,7 @@ sudo ./llvm.sh <version number>
 
 ## Notes
 - `include <assert.h>` is required for `_Static_assert keyword` or `static_assert macro` for stdc11 or higher. No longer needed since C/C++ 23. [ref1](https://en.cppreference.com/w/c/language/_Static_assert) - [ref2](https://learn.microsoft.com/en-us/cpp/c-language/static-assert-c?view=msvc-170)
+
+### Memory subsystem
+We want to control how and when the allocations occur.
+- Limit dynamic memory allocations
