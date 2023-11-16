@@ -40,8 +40,8 @@
             "inherits": "ninja_multi_base",
             "hidden": false,
             "cacheVariables": {
-                "CMAKE_C_COMPILER": "cl",
-                "CMAKE_CXX_COMPILER": "cl"
+                "CMAKE_C_COMPILER": "clang",
+                "CMAKE_CXX_COMPILER": "clang"
             },
             "condition": {
                 "type": "equals",
@@ -169,8 +169,13 @@
             "description": "",
             "displayName": "",
             "hidden": true,
-            "output": {"outputOnFailure": true},
-            "execution": {"noTestsAction": "error", "stopOnFailure": true}  
+            "output": {
+                "outputOnFailure": true
+            },
+            "execution": {
+                "noTestsAction": "error",
+                "stopOnFailure": true
+            }
         },
         {
             "name": "msvc_test",
