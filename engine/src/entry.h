@@ -3,6 +3,7 @@
 
 #include "core/application.h"
 #include "core/logger.h"
+#include "core/kmemory.h"
 #include "game_types.h"
 
 #include <stdlib.h>
@@ -16,6 +17,13 @@ extern b8 create_game(game* out_game);
  * The main entry point of the application.
  */
 int main(void) {
+    // IMPORTANT: Nothing should be called before this method
+    // memory is the only subsystem created at this level
+    // We need a lot of allocations later
+    // we need this before doing anything
+    initialize_memory();
+    // initialize_logging(); should be here maybe rather than application_create
+
     // Request the game instance from the application.
     game game_inst;
     if (!create_game(&game_inst)) {
@@ -31,7 +39,7 @@ int main(void) {
 
     // Initialization.
     if (!application_create(&game_inst)) {
-        KINFO("Application failed to create!.", 0);
+        KFATAL("Application failed to create!.", 0);
         return EXIT_FAILURE;
     }
 
@@ -40,6 +48,9 @@ int main(void) {
         KINFO("Application did not shutdown gracefully.", 0);
         return 2;
     }
+
+    shutdown_memory();
+    // Nothing should be called after this method call.
 
     return EXIT_SUCCESS;
 }
