@@ -68,7 +68,8 @@ b8 application_create(game* game_inst) {
 }
 
 b8 application_run() {
-    KINFO(get_memory_usage_str(), 0);
+    // get_memory_usage_str() is not portable due to strdup function call.
+    // KINFO(get_memory_usage_str(), 0);
 
     while (app_state.is_running) {
         // if for any reason pump_messages returns false, just leave.
