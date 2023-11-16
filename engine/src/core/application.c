@@ -5,6 +5,7 @@
 
 #include "platform/platform.h"
 #include "core/kmemory.h"
+#include "core/event.h"
 
 typedef struct application_state {
     game* game_inst;
@@ -42,6 +43,11 @@ b8 application_create(game* game_inst) {
     // i.e. when you jump to other app in an Android device,
     // you should not consume the resources so this is the way to do that
     app_state.is_suspended = FALSE;
+
+    if (!event_initialize()) {
+        KERROR("Event system failed initialization. Application cannot continue.", 0);
+        return FALSE;
+    }
 
     if (!platform_startup(
             &app_state.platform,
@@ -96,6 +102,7 @@ b8 application_run() {
 
     // Shutdown
     app_state.is_running = FALSE;
+    event_shutdown();
     platform_shutdown(&app_state.platform);
 
     return TRUE;

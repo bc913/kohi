@@ -52,3 +52,14 @@ sudo ./llvm.sh <version number>
 ### Memory subsystem
 We want to control how and when the allocations occur.
 - Limit dynamic memory allocations
+
+### Event subsystem
+What does an event should include?
+- Contextual info about the event and its data
+- sender
+
+For the moment: 
+- Our event system is immediate. When the event is fired, how long the handler takes, the handler takes. The caller should wait because it is single threaded.
+- If the handler takes longer, it will negatively affect the frame rate. It should be implemented as multi-threaded.
+- Also, events can be attached with some priority There might also be some limitation on how many events can fired within a frame. i.e. if the upper limit 50 and we have 60 events to fire, we should queue the 10 events to be fired in the next frame's update.
+
