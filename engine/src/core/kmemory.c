@@ -107,9 +107,14 @@ char* get_memory_usage_str() {
         }
 
         // returns number of chars written
-        i32 length = snprintf(buffer + offset, 8000, "  %s: %.2f%s\n", memory_tag_strings[i], amount, unit);
+        i32 length = snprintf(buffer + offset, 8000 - offset, "  %s: %.2f%s\n", memory_tag_strings[i], amount, unit);
         offset += length;
     }
-    char* out_string = _strdup(buffer);
+    char* out_string;
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
+    out_string = _strdup(buffer);
+#else
+    out_string = strdup(buffer);
+#endif
     return out_string;
 }
