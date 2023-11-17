@@ -1,6 +1,7 @@
 #include "kmemory.h"
 
 #include "core/logger.h"
+#include "core/kstring.h"
 #include "platform/platform.h"
 
 // TODO: Custom string lib
@@ -43,7 +44,7 @@ void shutdown_memory() {
 
 void* kallocate(u64 size /*bytes*/, memory_tag tag) {
     if (tag == MEMORY_TAG_UNKNOWN) {
-        KWARN("kallocate called using MEMORY_TAG_UNKNOWN. Re-class this allocation.", 0);
+        KWARN("kallocate called using MEMORY_TAG_UNKNOWN. Re-class this allocation.");
     }
 
     stats.total_allocated += size;
@@ -59,7 +60,7 @@ void* kallocate(u64 size /*bytes*/, memory_tag tag) {
 
 void kfree(void* block, u64 size, memory_tag tag) {
     if (tag == MEMORY_TAG_UNKNOWN) {
-        KWARN("kfree called using MEMORY_TAG_UNKNOWN. Re-class this allocation.", 0);
+        KWARN("kfree called using MEMORY_TAG_UNKNOWN. Re-class this allocation.");
     }
 
     stats.total_allocated -= size;
@@ -110,11 +111,6 @@ char* get_memory_usage_str() {
         i32 length = snprintf(buffer + offset, 8000 - offset, "  %s: %.2f%s\n", memory_tag_strings[i], amount, unit);
         offset += length;
     }
-    char* out_string;
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
-    out_string = _strdup(buffer);
-#else
-    out_string = strdup(buffer);
-#endif
+    char* out_string = string_duplicate(buffer);
     return out_string;
 }

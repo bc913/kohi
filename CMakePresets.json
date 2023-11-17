@@ -7,19 +7,6 @@
     },
     "configurePresets": [
         {
-            "name": "msvc",
-            "displayName": "msvc config base",
-            "generator": "Visual Studio 16 2019",
-            "hidden": false,
-            "binaryDir": "${sourceDir}/out/build/${presetName}",
-            "installDir": "${sourceDir}/out/install/${presetName}",
-            "condition": {
-                "type": "equals",
-                "lhs": "${hostSystemName}",
-                "rhs": "Windows"
-            }
-        },
-        {
             "name": "ninja_multi_base",
             "displayName": "Config ninja base preset",
             "generator": "Ninja Multi-Config",
@@ -35,131 +22,47 @@
             }
         },
         {
-            "name": "ninja_win",
-            "displayName": "Ninja Win Multi",
+            "name": "ninja_multi",
+            "displayName": "Ninja Multi",
             "inherits": "ninja_multi_base",
             "hidden": false,
             "cacheVariables": {
                 "CMAKE_C_COMPILER": "clang",
                 "CMAKE_CXX_COMPILER": "clang"
-            },
-            "condition": {
-                "type": "equals",
-                "lhs": "${hostSystemName}",
-                "rhs": "Windows"
-            }
-        },
-        {
-            "name": "ninja_lnx",
-            "displayName": "Ninja Linux Multi",
-            "inherits": "ninja_multi_base",
-            "hidden": false,
-            "cacheVariables": {
-                "CMAKE_C_COMPILER": "gcc-11",
-                "CMAKE_CXX_COMPILER": "g++-11"
-            },
-            "condition": {
-                "type": "equals",
-                "lhs": "${hostSystemName}",
-                "rhs": "Linux"
             }
         }
     ],
     "buildPresets": [
         {
-            "name": "win_debug",
-            "configurePreset": "msvc",
+            "name": "ninja_debug",
+            "configurePreset": "ninja_multi",
             "configuration": "Debug"
         },
         {
-            "name": "win_debug_clean",
-            "configurePreset": "msvc",
+            "name": "ninja_debug_clean",
+            "configurePreset": "ninja_multi",
             "configuration": "Debug",
             "cleanFirst": true
         },
         {
-            "name": "win_release",
-            "configurePreset": "msvc",
+            "name": "ninja_release",
+            "configurePreset": "ninja_multi",
             "configuration": "Release"
         },
         {
-            "name": "win_release_clean",
-            "configurePreset": "msvc",
+            "name": "ninja_release_clean",
+            "configurePreset": "ninja_multi",
             "configuration": "Release",
             "cleanFirst": true
         },
         {
-            "name": "win_rel_deb_info",
-            "configurePreset": "msvc",
+            "name": "ninja_rel_deb_info",
+            "configurePreset": "ninja_multi",
             "configuration": "RelWithDebInfo"
         },
         {
-            "name": "win_min_size_rel",
-            "configurePreset": "msvc",
-            "configuration": "MinSizeRel"
-        },
-        {
-            "name": "ninja_win_debug",
-            "configurePreset": "ninja_win",
-            "configuration": "Debug"
-        },
-        {
-            "name": "ninja_win_debug_clean",
-            "configurePreset": "ninja_win",
-            "configuration": "Debug",
-            "cleanFirst": true
-        },
-        {
-            "name": "ninja_win_release",
-            "configurePreset": "ninja_win",
-            "configuration": "Release"
-        },
-        {
-            "name": "ninja_win_release_clean",
-            "configurePreset": "ninja_win",
-            "configuration": "Release",
-            "cleanFirst": true
-        },
-        {
-            "name": "ninja_win_rel_deb_info",
-            "configurePreset": "ninja_win",
-            "configuration": "RelWithDebInfo"
-        },
-        {
-            "name": "ninja_win_min_size_rel",
-            "configurePreset": "ninja_win",
-            "configuration": "MinSizeRel"
-        },
-        {
-            "name": "lnx_debug",
-            "configurePreset": "ninja_lnx",
-            "configuration": "Debug"
-        },
-        {
-            "name": "lnx_debug_clean",
-            "configurePreset": "ninja_lnx",
-            "configuration": "Debug",
-            "cleanFirst": true
-        },
-        {
-            "name": "lnx_release",
-            "configurePreset": "ninja_lnx",
-            "configuration": "Release"
-        },
-        {
-            "name": "lnx_release_clean",
-            "configurePreset": "ninja_lnx",
-            "configuration": "Release",
-            "cleanFirst": true
-        },
-        {
-            "name": "lnx_rel_deb_info",
-            "configurePreset": "ninja_lnx",
-            "configuration": "RelWithDebInfo"
-        },
-        {
-            "name": "lnx_min_size_rel",
-            "configurePreset": "ninja_lnx",
+            "name": "ninja_min_size_rel",
+            "configurePreset": "ninja_multi",
             "configuration": "MinSizeRel"
         }
     ],
@@ -178,22 +81,10 @@
             }
         },
         {
-            "name": "msvc_test",
+            "name": "ninja_test",
             "hidden": false,
             "inherits": "base",
-            "configurePreset": "msvc"
-        },
-        {
-            "name": "ninja_win_test",
-            "hidden": false,
-            "inherits": "base",
-            "configurePreset": "ninja_win"
-        },
-        {
-            "name": "linux_test",
-            "hidden": false,
-            "inherits": "base",
-            "configurePreset": "ninja_lnx"
+            "configurePreset": "ninja_multi"
         }
     ]
 }
