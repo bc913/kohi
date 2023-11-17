@@ -44,7 +44,7 @@ void shutdown_memory() {
 
 void* kallocate(u64 size /*bytes*/, memory_tag tag) {
     if (tag == MEMORY_TAG_UNKNOWN) {
-        KWARN("kallocate called using MEMORY_TAG_UNKNOWN. Re-class this allocation.", 0);
+        KWARN("kallocate called using MEMORY_TAG_UNKNOWN. Re-class this allocation.");
     }
 
     stats.total_allocated += size;
@@ -60,7 +60,7 @@ void* kallocate(u64 size /*bytes*/, memory_tag tag) {
 
 void kfree(void* block, u64 size, memory_tag tag) {
     if (tag == MEMORY_TAG_UNKNOWN) {
-        KWARN("kfree called using MEMORY_TAG_UNKNOWN. Re-class this allocation.", 0);
+        KWARN("kfree called using MEMORY_TAG_UNKNOWN. Re-class this allocation.");
     }
 
     stats.total_allocated -= size;

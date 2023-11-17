@@ -32,7 +32,7 @@ b8 application_on_key(u16 code, void* sender, void* listener_inst, event_context
 // -----------------------
 b8 application_create(game* game_inst) {
     if (initialized) {
-        KERROR("application_create called more than once.", 0);
+        KERROR("application_create called more than once.");
         return FALSE;
     }
 
@@ -56,7 +56,7 @@ b8 application_create(game* game_inst) {
     app_state.is_suspended = FALSE;
 
     if (!event_initialize()) {
-        KERROR("Event system failed initialization. Application cannot continue.", 0);
+        KERROR("Event system failed initialization. Application cannot continue.");
         return FALSE;
     }
 
@@ -77,7 +77,7 @@ b8 application_create(game* game_inst) {
 
     // Initialize the game.
     if (!app_state.game_inst->initialize(app_state.game_inst)) {
-        KFATAL("Game failed to initialize.", 0);
+        KFATAL("Game failed to initialize.");
         return FALSE;
     }
 
@@ -102,14 +102,14 @@ b8 application_run() {
         if (!app_state.is_suspended) {
             // Update
             if (!app_state.game_inst->update(app_state.game_inst, (f32)0)) {
-                KFATAL("Game update failed, shutting down.", 0);
+                KFATAL("Game update failed, shutting down.");
                 app_state.is_running = FALSE;
                 break;
             }
 
             // Call the game's render routine.
             if (!app_state.game_inst->render(app_state.game_inst, (f32)0)) {
-                KFATAL("Game render failed, shutting down.", 0);
+                KFATAL("Game render failed, shutting down.");
                 app_state.is_running = FALSE;
                 break;
             }
