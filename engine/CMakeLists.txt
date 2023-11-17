@@ -24,6 +24,7 @@ list(APPEND _CORE_HEADER_FILES
         src/core/application.h
         src/core/kmemory.h
         src/core/event.h
+        src/core/input.h
 )
 
 set(_CORE_SOURCE_FILES)
@@ -32,6 +33,7 @@ list(APPEND _CORE_SOURCE_FILES
     src/core/application.c
     src/core/kmemory.c
     src/core/event.c
+    src/core/input.c
 )
 
 # ----------
