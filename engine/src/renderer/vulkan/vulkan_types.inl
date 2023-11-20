@@ -3,6 +3,13 @@
 // This file contains VULKAN specific types
 
 #include "defines.h"
+#include "core/asserts.h"
+
+// Checks the given expression's return value against VK_SUCCESS.
+#define VK_CHECK(expr)               \
+    {                                \
+        KASSERT(expr == VK_SUCCESS); \
+    }
 
 #if defined(K_USE_VOLK_LOADER)
 
@@ -26,6 +33,9 @@
 typedef struct vulkan_context {
     VkInstance instance;
     VkAllocationCallbacks* allocator;
+#if defined(_DEBUG)
+    VkDebugUtilsMessengerEXT debug_messenger;
+#endif
 } vulkan_context;
 
 #endif

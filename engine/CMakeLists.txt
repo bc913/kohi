@@ -75,6 +75,7 @@ set(_RENDERER_VULKAN_HEADER_FILES)
 list(APPEND _RENDERER_VULKAN_HEADER_FILES
     src/renderer/vulkan/vulkan_backend.h
     src/renderer/vulkan/vulkan_types.inl
+    src/renderer/vulkan/vulkan_platform.h
 )
 set(_RENDERER_VULKAN_SOURCE_FILES)
 list(APPEND _RENDERER_VULKAN_SOURCE_FILES
