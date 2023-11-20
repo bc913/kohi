@@ -26,6 +26,7 @@ list(APPEND _CORE_HEADER_FILES
         src/core/event.h
         src/core/input.h
         src/core/kstring.h
+        src/core/clock.h
 )
 
 set(_CORE_SOURCE_FILES)
@@ -36,6 +37,7 @@ list(APPEND _CORE_SOURCE_FILES
     src/core/event.c
     src/core/input.c
     src/core/kstring.c
+    src/core/clock.c
 )
 
 # ----------
