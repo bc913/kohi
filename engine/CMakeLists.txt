@@ -9,6 +9,7 @@ add_library(${PROJECT_NAME} SHARED "")
 
 
 # https://cmake.org/cmake/help/latest/manual/cmake-generator-expressions.7.html#genex:COMPILE_LANGUAGE
+
 # ----------
 # Core
 # ----------
@@ -69,6 +70,21 @@ list(APPEND _RENDERER_SOURCE_FILES
     src/renderer/renderer_frontend.c
 )
 
+# Vulkan
+set(_RENDERER_VULKAN_HEADER_FILES)
+list(APPEND _RENDERER_VULKAN_HEADER_FILES
+    src/renderer/vulkan/vulkan_backend.h
+    src/renderer/vulkan/vulkan_types.inl
+)
+set(_RENDERER_VULKAN_SOURCE_FILES)
+list(APPEND _RENDERER_VULKAN_SOURCE_FILES
+    src/renderer/vulkan/vulkan_backend.c
+)
+
+# TODO: Based on selected renderer backend use cmake generator expressions here
+# Send renderers together
+list(APPEND _RENDERER_HEADER_FILES ${_RENDERER_VULKAN_HEADER_FILES})
+list(APPEND _RENDERER_SOURCE_FILES ${_RENDERER_VULKAN_SOURCE_FILES})
 
 # ----------
 # Containers
@@ -106,10 +122,12 @@ target_sources(${PROJECT_NAME}
 # ----------
 # Definitions
 # ----------
-
 target_link_libraries(${PROJECT_NAME} 
-                            PRIVATE
-                                Vulkan::Headers
+                            PRIVATE                                
+                                $<$<BOOL:${KOHI_USE_VOLK_LOADER}>:
+                                    Vulkan::Headers
+                                    volk_headers
+                                >
                                 $<$<PLATFORM_ID:Linux>:
                                     xcb
                                     X11
@@ -124,6 +142,7 @@ target_compile_definitions(
     PUBLIC 
         KEXPORT
     PRIVATE
+        $<$<BOOL:${KOHI_USE_VOLK_LOADER}>:K_USE_VOLK_LOADER>
         $<$<PLATFORM_ID:Linux>: _POSIX_C_SOURCE=199309L> # CLOCK_MONOTONIC
     #     $<$<PLATFORM_ID:Windows>: KPLATFORM_WINDOWS> # not required since 
 )
