@@ -54,6 +54,23 @@ list(APPEND _PLATFORM_SOURCE_FILES
 )
 
 # ----------
+# Renderer
+# ----------
+set(_RENDERER_HEADER_FILES)
+list(APPEND _RENDERER_HEADER_FILES
+    src/renderer/renderer_types.inl
+    src/renderer/renderer_frontend.h
+    src/renderer/renderer_backend.h
+)
+
+set(_RENDERER_SOURCE_FILES)
+list(APPEND _RENDERER_SOURCE_FILES
+    src/renderer/renderer_backend.c
+    src/renderer/renderer_frontend.c
+)
+
+
+# ----------
 # Containers
 # ----------
 set(_CONTAINERS_HEADER_FILES)
@@ -70,6 +87,7 @@ target_sources(${PROJECT_NAME}
     PRIVATE
         ${_CORE_SOURCE_FILES}
         ${_PLATFORM_SOURCE_FILES}
+        ${_RENDERER_SOURCE_FILES}
         ${_CONTAINERS_SOURCE_FILES}
     PUBLIC
         FILE_SET ${PROJECT_NAME}_header_files 
@@ -81,6 +99,7 @@ target_sources(${PROJECT_NAME}
             src/game_types.h
             ${_CORE_HEADER_FILES}
             ${_PLATFORM_HEADER_FILES}
+            ${_RENDERER_HEADER_FILES}
             ${_CONTAINERS_HEADER_FILES}
 )
 
