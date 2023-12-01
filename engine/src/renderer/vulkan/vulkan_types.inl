@@ -53,6 +53,8 @@ typedef struct vulkan_device {
     VkQueue present_queue;
     VkQueue transfer_queue;
 
+    VkCommandPool graphics_command_pool;
+
     VkPhysicalDeviceProperties properties;
     VkPhysicalDeviceFeatures features;
     VkPhysicalDeviceMemoryProperties memory;
@@ -110,9 +112,20 @@ typedef struct vulkan_swapchain {
 
 typedef enum vulkan_command_buffer_state {
     COMMAND_BUFFER_STATE_READY,
+    /*
+    states the point when the commands are issued
+    to the command buffer.
+    */
     COMMAND_BUFFER_STATE_RECORDING,
+    /*
+
+    */
     COMMAND_BUFFER_STATE_IN_RENDER_PASS,
+    /* states that recording is over*/
     COMMAND_BUFFER_STATE_RECORDING_ENDED,
+    /* all the commands in the buffer has been completely
+    executed. Occurs after RECORDING_ENDED state.
+    */
     COMMAND_BUFFER_STATE_SUBMITTED,
     COMMAND_BUFFER_STATE_NOT_ALLOCATED
 } vulkan_command_buffer_state;
@@ -143,6 +156,8 @@ typedef struct vulkan_context {
 
     vulkan_swapchain swapchain;
     vulkan_renderpass main_renderpass;
+    // darray
+    vulkan_command_buffer* graphics_command_buffers;
 
     // Currently used image's index
     u32 image_index;
