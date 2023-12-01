@@ -4,6 +4,7 @@
 #include "vulkan_platform.h"
 #include "vulkan_device.h"
 #include "vulkan_swapchain.h"
+#include "vulkan_renderpass.h"
 
 #include "core/logger.h"
 #include "core/kstring.h"
@@ -187,18 +188,33 @@ b8 vulkan_renderer_backend_initialize(renderer_backend* backend, const char* app
     }
     KDEBUG("Vulkan surface created.");
 
-    // Device creation
+    // ------------------
+    // Device
+    // ------------------
     if (!vulkan_device_create(&context)) {
         KERROR("Failed to create device!");
         return FALSE;
     }
 
+    // ------------------
     // Swapchain
+    // ------------------
     vulkan_swapchain_create(
         &context,
         context.framebuffer_width,
         context.framebuffer_height,
         &context.swapchain);
+
+    // ------------------
+    // Renderpass
+    // ------------------
+    vulkan_renderpass_create(
+        &context,
+        &context.main_renderpass,
+        0, 0, context.framebuffer_width, context.framebuffer_height,
+        0.0f, 0.0f, 0.2f, 1.0f,
+        1.0f,
+        0);
 
     // ------------------
     // Finalize
@@ -210,6 +226,9 @@ b8 vulkan_renderer_backend_initialize(renderer_backend* backend, const char* app
 
 void vulkan_renderer_backend_shutdown(renderer_backend* backend) {
     // Destroy in the opposite order of creation.
+
+    // Renderpass
+    vulkan_renderpass_destroy(&context, &context.main_renderpass);
 
     // Swapchain
     vulkan_swapchain_destroy(&context, &context.swapchain);

@@ -79,6 +79,7 @@ list(APPEND _RENDERER_VULKAN_HEADER_FILES
     src/renderer/vulkan/vulkan_device.h
     src/renderer/vulkan/vulkan_swapchain.h
     src/renderer/vulkan/vulkan_image.h
+    src/renderer/vulkan/vulkan_renderpass.h
 )
 set(_RENDERER_VULKAN_SOURCE_FILES)
 list(APPEND _RENDERER_VULKAN_SOURCE_FILES
@@ -86,6 +87,7 @@ list(APPEND _RENDERER_VULKAN_SOURCE_FILES
     src/renderer/vulkan/vulkan_device.c
     src/renderer/vulkan/vulkan_swapchain.c
     src/renderer/vulkan/vulkan_image.c
+    src/renderer/vulkan/vulkan_renderpass.c
 )
 
 # TODO: Based on selected renderer backend use cmake generator expressions here
