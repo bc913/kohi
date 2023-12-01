@@ -99,6 +99,13 @@ typedef struct vulkan_renderpass {
     vulkan_render_pass_state state;
 } vulkan_renderpass;
 
+typedef struct vulkan_framebuffer {
+    VkFramebuffer handle;
+    u32 attachment_count;
+    VkImageView* attachments;
+    vulkan_renderpass* renderpass;
+} vulkan_framebuffer;
+
 typedef struct vulkan_swapchain {
     VkSurfaceFormatKHR image_format;  // image format
     u8 max_frames_in_flight;          //
@@ -108,6 +115,8 @@ typedef struct vulkan_swapchain {
     VkImageView* views;
 
     vulkan_image depth_attachment;
+    // framebuffers used for on-screen rendering.
+    vulkan_framebuffer* framebuffers;
 } vulkan_swapchain;
 
 typedef enum vulkan_command_buffer_state {
@@ -138,6 +147,19 @@ typedef struct vulkan_command_buffer {
     vulkan_command_buffer_state state;
 } vulkan_command_buffer;
 
+/**
+ *
+ */
+typedef struct vulkan_fence {
+    VkFence handle;
+    /**
+     * Happens whenever we are waiting for a fence
+     * and then that fence get signalled bec the operation has completed
+     *
+     */
+    b8 is_signaled;
+} vulkan_fence;
+
 typedef struct vulkan_context {
     // The framebuffer's current width.
     u32 framebuffer_width;
@@ -158,6 +180,24 @@ typedef struct vulkan_context {
     vulkan_renderpass main_renderpass;
     // darray
     vulkan_command_buffer* graphics_command_buffers;
+
+    /**
+     * Triggered when an image becomes available for rendering
+     * this is when we're done presenting it
+     */
+    VkSemaphore* image_available_semaphores;  // darray
+
+    /**
+     * Triggered when a queue run against that and is now complete
+     * and the queue is ready to be presented
+     */
+    VkSemaphore* queue_complete_semaphores;  // darray
+
+    u32 in_flight_fence_count;
+    vulkan_fence* in_flight_fences;
+
+    // Holds pointers to fences which exist and are owned elsewhere.
+    vulkan_fence** images_in_flight;  // in sync with current_frame
 
     // Currently used image's index
     u32 image_index;
