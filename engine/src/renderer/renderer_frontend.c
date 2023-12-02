@@ -5,6 +5,8 @@
 #include "core/logger.h"
 #include "core/kmemory.h"
 
+#include <stddef.h>  // FOR null
+
 struct platform_state;
 
 // Backend render context.

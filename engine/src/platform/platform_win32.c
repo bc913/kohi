@@ -12,6 +12,7 @@
 #include <windows.h>
 #include <windowsx.h>  // param input extraction, i.e. WPARAM, LPARAM
 #include <stdlib.h>
+#include <stddef.h>
 
 // For surface creation
 #ifdef K_USE_VOLK_LOADER
