@@ -116,12 +116,28 @@ list(APPEND _CONTAINERS_SOURCE_FILES
     src/containers/darray.c
 )
 
+# ----------
+# Platform
+# ----------
+set(_MATH_HEADER_FILES)
+list(APPEND _MATH_HEADER_FILES
+    src/math/kmath.h
+    src/math/math_types.h
+)
+
+set(_MATH_SOURCE_FILES)
+list(APPEND _MATH_SOURCE_FILES
+    src/math/kmath.c
+)
+
+
 target_sources(${PROJECT_NAME}
     PRIVATE
         ${_CORE_SOURCE_FILES}
         ${_PLATFORM_SOURCE_FILES}
         ${_RENDERER_SOURCE_FILES}
         ${_CONTAINERS_SOURCE_FILES}
+        ${_MATH_HEADER_FILES}
     PUBLIC
         FILE_SET ${PROJECT_NAME}_header_files 
         TYPE HEADERS
@@ -134,6 +150,7 @@ target_sources(${PROJECT_NAME}
             ${_PLATFORM_HEADER_FILES}
             ${_RENDERER_HEADER_FILES}
             ${_CONTAINERS_HEADER_FILES}
+            ${_MATH_SOURCE_FILES}
 )
 
 # ----------
