@@ -445,6 +445,7 @@ b8 vulkan_renderer_backend_begin_frame(renderer_backend* backend, f32 delta_time
 
     // Check if recreating swap chain and boot out.
     if (context.recreating_swapchain) {
+        // Make sure device is in idle and is not doing anything so you can proceed.
         VkResult result = vkDeviceWaitIdle(device->logical_device);
         if (!vulkan_result_is_success(result)) {
             KERROR("vulkan_renderer_backend_begin_frame vkDeviceWaitIdle (1) failed: '%s'", vulkan_result_string(result, TRUE));
@@ -473,11 +474,12 @@ b8 vulkan_renderer_backend_begin_frame(renderer_backend* backend, f32 delta_time
     }
 
     // Wait for the execution of the current frame to complete. The fence being free will allow this one to move on.
+    // Wait for the current image being available to render
     if (!vulkan_fence_wait(
             &context,
             &context.in_flight_fences[context.current_frame],
             UINT64_MAX)) {
-        KWARN("In-flight fence wait failure!");
+        KWARN("In-flight fence wait failure!");  // not an error but if we start to see too many, we should keep an eye on it,
         return FALSE;
     }
 
@@ -498,8 +500,9 @@ b8 vulkan_renderer_backend_begin_frame(renderer_backend* backend, f32 delta_time
     vulkan_command_buffer_reset(command_buffer);
     vulkan_command_buffer_begin(command_buffer, FALSE, FALSE, FALSE);
 
-    // Dynamic state
-    VkViewport viewport;
+    // Dynamic state (OPTIONAL) - part of dynamic state
+    VkViewport viewport;  // current viewport
+    // Vulkan uses different concept but we adopt OPENGL approach (0,0 points) for compatibility
     viewport.x = 0.0f;
     viewport.y = (f32)context.framebuffer_height;
     viewport.width = (f32)context.framebuffer_width;
@@ -507,7 +510,8 @@ b8 vulkan_renderer_backend_begin_frame(renderer_backend* backend, f32 delta_time
     viewport.minDepth = 0.0f;
     viewport.maxDepth = 1.0f;
 
-    // Scissor
+    // Scissor (OPTIONAL) - part of dynamic state
+    // What region is gonna be clipped and showed
     VkRect2D scissor;
     scissor.offset.x = scissor.offset.y = 0;
     scissor.extent.width = context.framebuffer_width;
@@ -524,9 +528,11 @@ b8 vulkan_renderer_backend_begin_frame(renderer_backend* backend, f32 delta_time
         command_buffer,
         &context.main_renderpass,
         context.swapchain.framebuffers[context.image_index].handle);
+
     return TRUE;
 }
 
+// Should not run if begin failed
 b8 vulkan_renderer_backend_end_frame(renderer_backend* backend, f32 delta_time) {
     vulkan_command_buffer* command_buffer = &context.graphics_command_buffers[context.image_index];
 
@@ -537,7 +543,7 @@ b8 vulkan_renderer_backend_end_frame(renderer_backend* backend, f32 delta_time) 
 
     // Make sure the previous frame is not using this image (i.e. its fence is being waited on)
     if (context.images_in_flight[context.image_index] != VK_NULL_HANDLE) {  // was frame
-        vulkan_fence_wait(
+        vulkan_fence_wait(                                                  // Make sure previous frame is not using this image
             &context,
             context.images_in_flight[context.image_index],
             UINT64_MAX);
@@ -551,31 +557,31 @@ b8 vulkan_renderer_backend_end_frame(renderer_backend* backend, f32 delta_time) 
 
     // Submit the queue and wait for the operation to complete.
     // Begin queue submission
-    VkSubmitInfo submit_info = {VK_STRUCTURE_TYPE_SUBMIT_INFO};
-
+    VkSubmitInfo submit_info = {};
+    submit_info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
     // Command buffer(s) to be executed.
     submit_info.commandBufferCount = 1;
     submit_info.pCommandBuffers = &command_buffer->handle;
-
     // The semaphore(s) to be signaled when the queue is complete.
     submit_info.signalSemaphoreCount = 1;
     submit_info.pSignalSemaphores = &context.queue_complete_semaphores[context.current_frame];
-
     // Wait semaphore ensures that the operation cannot begin until the image is available.
     submit_info.waitSemaphoreCount = 1;
     submit_info.pWaitSemaphores = &context.image_available_semaphores[context.current_frame];
 
     // Each semaphore waits on the corresponding pipeline stage to complete. 1:1 ratio.
     // VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT prevents subsequent colour attachment
-    // writes from executing until the semaphore signals (i.e. one frame is presented at a time)
+    // writes from executing until the semaphore signals (i.e. makes sure we present one frame is presented at a time)
     VkPipelineStageFlags flags[1] = {VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
     submit_info.pWaitDstStageMask = flags;
 
+    // Submit the queue
     VkResult result = vkQueueSubmit(
         context.device.graphics_queue,
         1,
         &submit_info,
         context.in_flight_fences[context.current_frame].handle);
+
     if (result != VK_SUCCESS) {
         KERROR("vkQueueSubmit failed with result: %s", vulkan_result_string(result, TRUE));
         return FALSE;
@@ -648,8 +654,11 @@ b8 recreate_swapchain(renderer_backend* backend) {
         context.device.physical_device,
         context.surface,
         &context.device.swapchain_support);
+
+    // Make sure we have most up-to-date format available
     vulkan_device_detect_depth_format(&context.device);
 
+    // Just create
     vulkan_swapchain_recreate(
         &context,
         cached_framebuffer_width,
@@ -668,22 +677,22 @@ b8 recreate_swapchain(renderer_backend* backend) {
     context.framebuffer_size_last_generation = context.framebuffer_size_generation;
 
     // cleanup swapchain
+    // command buffers
     for (u32 i = 0; i < context.swapchain.image_count; ++i) {
         vulkan_command_buffer_free(&context, context.device.graphics_command_pool, &context.graphics_command_buffers[i]);
     }
-
     // Framebuffers.
     for (u32 i = 0; i < context.swapchain.image_count; ++i) {
         vulkan_framebuffer_destroy(&context, &context.swapchain.framebuffers[i]);
     }
-
+    // Dimensions
     context.main_renderpass.x = 0;
     context.main_renderpass.y = 0;
     context.main_renderpass.w = context.framebuffer_width;
     context.main_renderpass.h = context.framebuffer_height;
 
+    // Now, generate framebuffers and command buffers
     regenerate_framebuffers(backend, &context.swapchain, &context.main_renderpass);
-
     create_command_buffers(backend);
 
     // Clear the recreating flag.

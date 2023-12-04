@@ -264,7 +264,9 @@ b8 application_on_resized(u16 code, void* sender, void* listener_inst, event_con
                     KINFO("Window restored, resuming application.");
                     app_state.is_suspended = FALSE;
                 }
+                // Handle resize on game level first
                 app_state.game_inst->on_resize(app_state.game_inst, width, height);
+                // then on renderer
                 renderer_on_resized(width, height);
             }
         }
