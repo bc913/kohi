@@ -28,8 +28,7 @@
             "hidden": false,
             "cacheVariables": {
                 "CMAKE_C_COMPILER": "clang",
-                "CMAKE_CXX_COMPILER": "clang",
-                "KOHI_USE_VOLK_LOADER": "ON"
+                "CMAKE_CXX_COMPILER": "clang"
             }
         }
     ],

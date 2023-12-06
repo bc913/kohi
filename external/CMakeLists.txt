@@ -19,4 +19,29 @@ if(${KOHI_USE_VOLK_LOADER})
     )
     FetchContent_MakeAvailable(volk)
     FetchContent_MakeAvailable(vulkan_headers)
+
+# target_link_libraries(${PROJECT_NAME} 
+#     PRIVATE
+#         ${Vulkan_LIBRARIES}
+#         $<$<BOOL:${KOHI_USE_VOLK_LOADER}>:
+#             Vulkan::Headers
+#             volk_headers
+#         >
+#         $<$<PLATFORM_ID:Linux>:
+#             xcb
+#             X11
+#             X11-xcb
+#             # ${X11_LIBRARIES} xcb # to stay in the safe side
+#         >
+# )
+
+# target_compile_definitions(
+#     ${PROJECT_NAME} 
+#     PUBLIC 
+#         KEXPORT
+#     PRIVATE
+#         $<$<BOOL:${KOHI_USE_VOLK_LOADER}>:K_USE_VOLK_LOADER>
+#         $<$<PLATFORM_ID:Linux>: _POSIX_C_SOURCE=199309L> # CLOCK_MONOTONIC
+#     #     $<$<PLATFORM_ID:Windows>: KPLATFORM_WINDOWS> # not required since 
+# )
 endif()

@@ -1,4 +1,14 @@
 project(kohi_engine LANGUAGES C)
+# --------------
+# Vulkan dependency
+# --------------
+find_package(Vulkan)
+if(NOT Vulkan_FOUND)
+    message(FATAL_ERROR "Vulkan SDK NOT found.")
+else()
+    message(STATUS "Vulkan SDK ${Vulkan_VERSION} found.")
+endif()
+
 add_library(${PROJECT_NAME} SHARED "")
 
 # https://gitlab.kitware.com/cmake/community/-/wikis/doc/tutorials/How-To-Write-Platform-Checks
@@ -156,12 +166,10 @@ target_sources(${PROJECT_NAME}
 # ----------
 # Definitions
 # ----------
+target_include_directories(${PROJECT_NAME} PRIVATE ${Vulkan_INCLUDE_DIR})
 target_link_libraries(${PROJECT_NAME} 
-                            PRIVATE                                
-                                $<$<BOOL:${KOHI_USE_VOLK_LOADER}>:
-                                    Vulkan::Headers
-                                    volk_headers
-                                >
+                            PRIVATE
+                                ${Vulkan_LIBRARIES}
                                 $<$<PLATFORM_ID:Linux>:
                                     xcb
                                     X11
@@ -169,14 +177,12 @@ target_link_libraries(${PROJECT_NAME}
                                     # ${X11_LIBRARIES} xcb # to stay in the safe side
                                 >
 )
-message(STATUS "Vulkan Headers Version: ${VulkanHeaders_VERSION}")
 
 target_compile_definitions(
     ${PROJECT_NAME} 
     PUBLIC 
         KEXPORT
     PRIVATE
-        $<$<BOOL:${KOHI_USE_VOLK_LOADER}>:K_USE_VOLK_LOADER>
         $<$<PLATFORM_ID:Linux>: _POSIX_C_SOURCE=199309L> # CLOCK_MONOTONIC
     #     $<$<PLATFORM_ID:Windows>: KPLATFORM_WINDOWS> # not required since 
 )
