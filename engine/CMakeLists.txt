@@ -140,6 +140,19 @@ list(APPEND _MATH_SOURCE_FILES
     src/math/kmath.c
 )
 
+# ----------
+# Memory
+# ----------
+set(_MEMORY_HEADER_FILES)
+list(APPEND _MEMORY_HEADER_FILES
+    src/memory/linear_allocator.h
+)
+
+set(_MEMORY_SOURCE_FILES)
+list(APPEND _MEMORY_SOURCE_FILES
+    src/memory/linear_allocator.c
+)
+
 
 target_sources(${PROJECT_NAME}
     PRIVATE
@@ -147,7 +160,8 @@ target_sources(${PROJECT_NAME}
         ${_PLATFORM_SOURCE_FILES}
         ${_RENDERER_SOURCE_FILES}
         ${_CONTAINERS_SOURCE_FILES}
-        ${_MATH_HEADER_FILES}
+        ${_MATH_SOURCE_FILES}
+        ${_MEMORY_SOURCE_FILES}
     PUBLIC
         FILE_SET ${PROJECT_NAME}_header_files 
         TYPE HEADERS
@@ -160,7 +174,8 @@ target_sources(${PROJECT_NAME}
             ${_PLATFORM_HEADER_FILES}
             ${_RENDERER_HEADER_FILES}
             ${_CONTAINERS_HEADER_FILES}
-            ${_MATH_SOURCE_FILES}
+            ${_MATH_HEADER_FILES}
+            ${_MEMORY_HEADER_FILES}
 )
 
 # ----------
