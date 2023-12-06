@@ -1,0 +1,6 @@
+#ifndef KOHI_1701751090_LINEAR_ALLOCATOR_TESTS_H
+#define KOHI_1701751090_LINEAR_ALLOCATOR_TESTS_H
+
+void linear_allocator_register_tests();
+
+#endif
