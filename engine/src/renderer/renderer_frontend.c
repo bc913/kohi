@@ -22,10 +22,10 @@ b8 renderer_initialize(const char* application_name, struct platform_state* plat
 
     if (!backend->initialize(backend, application_name, plat_state)) {
         KFATAL("Renderer backend failed to initialize. Shutting down.");
-        return FALSE;
+        return false;
     }
 
-    return TRUE;
+    return true;
 }
 
 void renderer_shutdown() {
@@ -55,15 +55,15 @@ void renderer_on_resized(u16 width, u16 height) {
 b8 renderer_draw_frame(render_packet* packet) {
     // If the begin frame returned successfully, mid-frame operations may continue.
     if (renderer_begin_frame(packet->delta_time)) {  // returning false is not necessarily mean an error so check
-                                                     // against TRUE
+                                                     // against true
         // End the frame. If this fails, it is likely unrecoverable.
         b8 result = renderer_end_frame(packet->delta_time);
 
         if (!result) {
             KERROR("renderer_end_frame failed. Application shutting down...");
-            return FALSE;
+            return false;
         }
     }
 
-    return TRUE;
+    return true;
 }
