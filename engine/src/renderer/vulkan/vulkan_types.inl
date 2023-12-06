@@ -11,25 +11,7 @@
         KASSERT(expr == VK_SUCCESS); \
     }
 
-#if defined(K_USE_VOLK_LOADER)
-#define VK_NO_PROTOTYPES
-
-#if defined(_WIN32)
-#define VK_USE_PLATFORM_WIN32_KHR
-#elif defined(__linux__) || defined(__unix__)
-#define VK_USE_PLATFORM_XLIB_KHR
-#elif defined(__APPLE__)
-#define VK_USE_PLATFORM_MACOS_MVK
-#else
-#error "Platform not supported by this example."
-#endif
-
-#define VOLK_IMPLEMENTATION
-#include "volk.h"
-
-#else
 #include <vulkan/vulkan.h>
-#endif
 
 // Vulkan requires surface to draw onto
 // The surface will be obtained from the platform's windowing system.

@@ -45,46 +45,7 @@ static vulkan_context context;
 static u32 cached_framebuffer_width = 0;
 static u32 cached_framebuffer_height = 0;
 
-#ifdef K_USE_VOLK_LOADER
-b8 initialize_volk() {
-    /* This won't compile if the appropriate Vulkan platform define isn't set. */
-    void* ptr =
-#if defined(_WIN32)
-        &vkCreateWin32SurfaceKHR;
-#elif defined(__linux__) || defined(__unix__)
-        &vkCreateXlibSurfaceKHR;
-#elif defined(__APPLE__)
-        &vkCreateMacOSSurfaceMVK;
-#else
-        /* Platform not recogized for testing. */
-        NULL;
-#endif
-
-    /* Try to initialize volk. This might not work on CI builds, but the
-     * above should have compiled at least. */
-    VkResult r = volkInitialize();
-    if (r != VK_SUCCESS) {
-        return FALSE;
-    }
-
-    uint32_t version = volkGetInstanceVersion();
-    KINFO("Vulkan version %d.%d.%d initialized.",
-          VK_VERSION_MAJOR(version),
-          VK_VERSION_MINOR(version),
-          VK_VERSION_PATCH(version));
-
-    return TRUE;
-}
-#endif
-
 b8 vulkan_renderer_backend_initialize(renderer_backend* backend, const char* application_name, struct platform_state* plat_state) {
-#ifdef K_USE_VOLK_LOADER
-    if (!initialize_volk()) {
-        KERROR("volk Initialization failed:");
-        return FALSE;
-    }
-#endif
-
     // Function pointers
     context.find_memory_index = find_memory_index;
 
@@ -180,9 +141,6 @@ b8 vulkan_renderer_backend_initialize(renderer_backend* backend, const char* app
     // ------------------
     VK_CHECK(vkCreateInstance(&create_info, context.allocator, &context.instance));
     KINFO("Vulkan Instance created.");
-#ifdef K_USE_VOLK_LOADER
-    volkLoadInstance(context.instance);
-#endif
 
     // ------------------
     // Debugger

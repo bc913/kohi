@@ -33,12 +33,7 @@ xlib (almost depracated ) and xcb(new) -> client portion
 
 // For surface creation
 #define VK_USE_PLATFORM_XCB_KHR
-
-#ifdef K_USE_VOLK_LOADER
-
-#else
 #include <vulkan/vulkan.h>
-#endif
 #include "renderer/vulkan/vulkan_types.inl"
 
 typedef struct internal_state {
@@ -530,9 +525,10 @@ keys translate_keycode(u32 x_keycode) {
             return KEY_LCONTROL;
         case XK_Control_R:
             return KEY_RCONTROL;
-        // case XK_Menu: return KEY_LMENU;
-        case XK_Menu:
-            return KEY_RMENU;
+        case XK_Alt_L:
+            return KEY_LALT;
+        case XK_Alt_R:
+            return KEY_RALT;
 
         case XK_semicolon:
             return KEY_SEMICOLON;

@@ -7,6 +7,7 @@ typedef enum memory_tag {
     // For temporary use. Should be assigned one of the below or have a new tag created.
     MEMORY_TAG_UNKNOWN,  // Default
     MEMORY_TAG_ARRAY,
+    MEMORY_TAG_LINEAR_ALLOCATOR,
     MEMORY_TAG_DARRAY,
     MEMORY_TAG_DICT,
     MEMORY_TAG_RING_QUEUE,
@@ -40,5 +41,6 @@ KAPI void* kzero_memory(void* block, u64 size);
 KAPI void* kcopy_memory(void* dest, const void* source, u64 size);
 KAPI void* kset_memory(void* dest, i32 value, u64 size);
 KAPI char* get_memory_usage_str();  // Debug function
+KAPI u64 get_memory_alloc_count();
 
 #endif

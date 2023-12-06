@@ -30,23 +30,21 @@ typedef union vec2_u {
  * Can represent any 3-d quantity i.e. position,
  * color or direction
  */
-typedef struct vec3_u {
-    union {
-        // An array of x, y, z
-        f32 elements[3];
-        struct {
-            union {
-                // The first element.
-                f32 x, r, s, u;
-            };
-            union {
-                // The second element.
-                f32 y, g, t, v;
-            };
-            union {
-                // The third element.
-                f32 z, b, p, w;
-            };
+typedef union vec3_u {
+    // An array of x, y, z
+    f32 elements[3];
+    struct {
+        union {
+            // The first element.
+            f32 x, r, s, u;
+        };
+        union {
+            // The second element.
+            f32 y, g, t, v;
+        };
+        union {
+            // The third element.
+            f32 z, b, p, w;
         };
     };
 } vec3;

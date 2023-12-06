@@ -15,12 +15,8 @@
 #include <stddef.h>
 
 // For surface creation
-#ifdef K_USE_VOLK_LOADER
-
-#else
 #include <vulkan/vulkan.h>  // Already included from vulkan_types.inl
 #include <vulkan/vulkan_win32.h>
-#endif
 #include "renderer/vulkan/vulkan_types.inl"
 
 typedef struct internal_state {
@@ -260,6 +256,27 @@ LRESULT CALLBACK win32_process_message(HWND hwnd, u32 msg, WPARAM w_param, LPARA
             // Key pressed/released
             b8 pressed = (msg == WM_KEYDOWN || msg == WM_SYSKEYDOWN);
             keys key = (u16)w_param;
+            // Alt key
+            if (w_param == VK_MENU) {
+                if (GetKeyState(VK_RMENU) & 0x8000) {
+                    key = KEY_RALT;
+                } else if (GetKeyState(VK_LMENU) & 0x8000) {
+                    key = KEY_LALT;
+                }
+            } else if (w_param == VK_SHIFT) {
+                if (GetKeyState(VK_RSHIFT) & 0x8000) {
+                    key = KEY_RSHIFT;
+                } else if (GetKeyState(VK_LSHIFT) & 0x8000) {
+                    key = KEY_LSHIFT;
+                }
+            } else if (w_param == VK_CONTROL) {
+                if (GetKeyState(VK_RCONTROL) & 0x8000) {
+                    key = KEY_RCONTROL;
+                } else if (GetKeyState(VK_LCONTROL) & 0x8000) {
+                    key = KEY_LCONTROL;
+                }
+            }
+
             // Pass to the input subsytem for processing
             input_process_key(key, pressed);
         } break;

@@ -3,7 +3,6 @@
 
 #include "core/application.h"
 #include "core/logger.h"
-#include "core/kmemory.h"
 #include "game_types.h"
 
 #include <stdlib.h>
@@ -21,7 +20,7 @@ int main(void) {
     // memory is the only subsystem created at this level
     // We need a lot of allocations later
     // we need this before doing anything
-    initialize_memory();
+    // initialize_memory();
     // initialize_logging(); should be here maybe rather than application_create
 
     // Request the game instance from the application.
@@ -49,8 +48,8 @@ int main(void) {
         return 2;
     }
 
-    shutdown_memory();
-    // Nothing should be called after this method call.
+    // shutdown_memory();
+    //  Nothing should be called after this method call.
 
     return EXIT_SUCCESS;
 }

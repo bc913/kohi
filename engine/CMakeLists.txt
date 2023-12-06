@@ -62,6 +62,7 @@ set(_PLATFORM_SOURCE_FILES)
 list(APPEND _PLATFORM_SOURCE_FILES
     src/platform/platform_win32.c
     src/platform/platform_linux.c
+    src/platform/platform_macos.m
 )
 
 # ----------
@@ -127,7 +128,7 @@ list(APPEND _CONTAINERS_SOURCE_FILES
 )
 
 # ----------
-# Platform
+# Math
 # ----------
 set(_MATH_HEADER_FILES)
 list(APPEND _MATH_HEADER_FILES
