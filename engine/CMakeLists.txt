@@ -1,13 +1,4 @@
 project(kohi_engine LANGUAGES C)
-# --------------
-# Vulkan dependency
-# --------------
-find_package(Vulkan)
-if(NOT Vulkan_FOUND)
-    message(FATAL_ERROR "Vulkan SDK NOT found.")
-else()
-    message(STATUS "Vulkan SDK ${Vulkan_VERSION} found.")
-endif()
 
 add_library(${PROJECT_NAME} SHARED "")
 
@@ -183,17 +174,26 @@ target_sources(${PROJECT_NAME}
 # ----------
 # Definitions
 # ----------
-target_include_directories(${PROJECT_NAME} PRIVATE ${Vulkan_INCLUDE_DIR})
-target_link_libraries(${PROJECT_NAME} 
-                            PRIVATE
-                                ${Vulkan_LIBRARIES}
-                                $<$<PLATFORM_ID:Linux>:
-                                    xcb
-                                    X11
-                                    X11-xcb
-                                    # ${X11_LIBRARIES} xcb # to stay in the safe side
-                                >
+set(_EXTERNAL_INCLUDE_DIRS)
+list(APPEND _EXTERNAL_INCLUDE_DIRS
+    PRIVATE
+        $<$<BOOL:${AUTO_LOCATE_VULKAN}>:${Vulkan_INCLUDE_DIR}>
 )
+target_include_directories(${PROJECT_NAME} ${_EXTERNAL_INCLUDE_DIRS})
+
+set(_EXTERNAL_LIBRARIES)
+list(APPEND _EXTERNAL_LIBRARIES
+    PRIVATE
+        $<$<BOOL:${AUTO_LOCATE_VULKAN}>:${Vulkan_LIBRARIES}>
+        $<$<PLATFORM_ID:Linux>:
+                            xcb
+                            X11
+                            X11-xcb
+                            # ${X11_LIBRARIES} xcb # to stay in the safe side
+        >
+)
+target_link_libraries(${PROJECT_NAME} ${_EXTERNAL_LIBRARIES})
+
 
 target_compile_definitions(
     ${PROJECT_NAME} 
@@ -204,6 +204,14 @@ target_compile_definitions(
     #     $<$<PLATFORM_ID:Windows>: KPLATFORM_WINDOWS> # not required since 
 )
 
+# ----------
+# Post-Build
+# ----------
+
+
+# ----------
+# Install
+# ----------
 install(
     TARGETS ${PROJECT_NAME}
     EXPORT ${PROJECT_NAME}Targets
