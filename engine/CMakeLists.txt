@@ -207,7 +207,7 @@ target_compile_definitions(
 # ----------
 # Post-Build
 # ----------
-
+APPEND_GLSL_TO_TARGET(${PROJECT_NAME})
 
 # ----------
 # Install
