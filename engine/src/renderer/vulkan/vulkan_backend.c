@@ -45,7 +45,7 @@ static vulkan_context context;
 static u32 cached_framebuffer_width = 0;
 static u32 cached_framebuffer_height = 0;
 
-b8 vulkan_renderer_backend_initialize(renderer_backend* backend, const char* application_name, struct platform_state* plat_state) {
+b8 vulkan_renderer_backend_initialize(renderer_backend* backend, const char* application_name) {
     // Function pointers
     context.find_memory_index = find_memory_index;
 
@@ -168,7 +168,7 @@ b8 vulkan_renderer_backend_initialize(renderer_backend* backend, const char* app
     // Surface
     // ------------------
     KDEBUG("Creating Vulkan surface...");
-    if (!platform_create_vulkan_surface(plat_state, &context)) {
+    if (!platform_create_vulkan_surface(&context)) {
         KERROR("Failed to create platform surface!");
         return false;
     }

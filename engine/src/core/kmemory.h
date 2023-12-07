@@ -28,12 +28,11 @@ typedef enum memory_tag {
 } memory_tag;
 
 // TODO: These will not be exported
-KAPI void initialize_memory();
-KAPI void shutdown_memory();
+KAPI void memory_system_initialize(u64* memory_requirement, void* state);
+KAPI void memory_system_shutdown(void* state);
 
 // These methods should call the platform specific memory ops
 KAPI void* kallocate(u64 size, memory_tag tag);
-
 KAPI void kfree(void* block, u64 size, memory_tag tag);
 
 // Convenience methods

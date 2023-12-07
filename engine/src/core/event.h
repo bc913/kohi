@@ -30,8 +30,8 @@ typedef struct event_context {
 // Should return true if handled.
 typedef b8 (*PFN_on_event)(u16 code, void* sender, void* listener_inst, event_context data);
 
-b8 event_initialize();
-void event_shutdown();
+void event_system_initialize();
+void event_system_shutdown();
 
 // Register the on_event pfn to the listener
 /**

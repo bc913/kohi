@@ -11,11 +11,10 @@ typedef enum renderer_backend_type {
 
 // Renderer implementations will fill out these function impls
 typedef struct renderer_backend {
-    struct platform_state* plat_state;
     u64 frame_number;
 
     // Initialize
-    b8 (*initialize)(struct renderer_backend* backend, const char* application_name, struct platform_state* plat_state);
+    b8 (*initialize)(struct renderer_backend* backend, const char* application_name);
     // Shutdown
     void (*shutdown)(struct renderer_backend* backend);
     // Action against window resize (against new width and height)

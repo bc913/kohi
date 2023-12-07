@@ -63,6 +63,7 @@ list(APPEND _PLATFORM_SOURCE_FILES
     src/platform/platform_win32.c
     src/platform/platform_linux.c
     src/platform/platform_macos.m
+    src/platform/platform_macos.c
 )
 
 # ----------
