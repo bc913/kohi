@@ -48,6 +48,7 @@ list(APPEND _CORE_SOURCE_FILES
 set(_PLATFORM_HEADER_FILES)
 list(APPEND _PLATFORM_HEADER_FILES
     src/platform/platform.h
+    src/platform/filesystem.h
 )
 set(_PLATFORM_SOURCE_FILES)
 list(APPEND _PLATFORM_SOURCE_FILES
@@ -55,6 +56,7 @@ list(APPEND _PLATFORM_SOURCE_FILES
     src/platform/platform_linux.c
     src/platform/platform_macos.m
     src/platform/platform_macos.c
+    src/platform/filesystem.c
 )
 
 # ----------
@@ -87,6 +89,9 @@ list(APPEND _RENDERER_VULKAN_HEADER_FILES
     src/renderer/vulkan/vulkan_framebuffer.h
     src/renderer/vulkan/vulkan_fence.h
     src/renderer/vulkan/vulkan_utils.h
+    src/renderer/vulkan/vulkan_shader_utils.h
+    src/renderer/vulkan/shaders/vulkan_object_shader.h
+    src/renderer/vulkan/vulkan_pipeline.h
 )
 set(_RENDERER_VULKAN_SOURCE_FILES)
 list(APPEND _RENDERER_VULKAN_SOURCE_FILES
@@ -99,6 +104,9 @@ list(APPEND _RENDERER_VULKAN_SOURCE_FILES
     src/renderer/vulkan/vulkan_framebuffer.c
     src/renderer/vulkan/vulkan_fence.c
     src/renderer/vulkan/vulkan_utils.c
+    src/renderer/vulkan/vulkan_shader_utils.c
+    src/renderer/vulkan/shaders/vulkan_object_shader.c
+    src/renderer/vulkan/vulkan_pipeline.c
 )
 
 # TODO: Based on selected renderer backend use cmake generator expressions here
@@ -155,6 +163,7 @@ target_sources(${PROJECT_NAME}
         ${_CONTAINERS_SOURCE_FILES}
         ${_MATH_SOURCE_FILES}
         ${_MEMORY_SOURCE_FILES}
+        ${_FILESYSTEM_SOURCE_FILES}
     PUBLIC
         FILE_SET ${PROJECT_NAME}_header_files 
         TYPE HEADERS
@@ -169,6 +178,7 @@ target_sources(${PROJECT_NAME}
             ${_CONTAINERS_HEADER_FILES}
             ${_MATH_HEADER_FILES}
             ${_MEMORY_HEADER_FILES}
+            ${_FILESYSTEM_HEADER_FILES}
 )
 
 # ----------
