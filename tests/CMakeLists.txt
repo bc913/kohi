@@ -18,7 +18,7 @@ list(APPEND _TESTS_SOURCE_FILES
 
 set(_MEMORY_TESTS_HEADER_FILES)
 list(APPEND _MEMORY_TESTS_HEADER_FILES
-    src/memory/linear_allocator_tests.H
+    src/memory/linear_allocator_tests.h
 )
 
 set(_MEMORY_TESTS_SOURCE_FILES)
