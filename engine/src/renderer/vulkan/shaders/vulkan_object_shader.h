@@ -10,4 +10,6 @@ void vulkan_object_shader_destroy(vulkan_context* context, struct vulkan_object_
 
 void vulkan_object_shader_use(vulkan_context* context, struct vulkan_object_shader* shader);
 
+void vulkan_object_shader_update_global_state(vulkan_context* context, struct vulkan_object_shader* shader);
+
 #endif
