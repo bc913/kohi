@@ -92,6 +92,7 @@ list(APPEND _RENDERER_VULKAN_HEADER_FILES
     src/renderer/vulkan/vulkan_shader_utils.h
     src/renderer/vulkan/shaders/vulkan_object_shader.h
     src/renderer/vulkan/vulkan_pipeline.h
+    src/renderer/vulkan/vulkan_buffer.h
 )
 set(_RENDERER_VULKAN_SOURCE_FILES)
 list(APPEND _RENDERER_VULKAN_SOURCE_FILES
@@ -107,6 +108,7 @@ list(APPEND _RENDERER_VULKAN_SOURCE_FILES
     src/renderer/vulkan/vulkan_shader_utils.c
     src/renderer/vulkan/shaders/vulkan_object_shader.c
     src/renderer/vulkan/vulkan_pipeline.c
+    src/renderer/vulkan/vulkan_buffer.c
 )
 
 # TODO: Based on selected renderer backend use cmake generator expressions here
