@@ -19,6 +19,7 @@ include(GNUInstallDirs)
 set(KOHI_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 set(CMAKE_MODULE_PATH ${KOHI_MODULE_PATH} ${CMAKE_MODULE_PATH})
 include(HandleVulkanDeps)
+include(ResourcesFunctions)
 
 # ---------------
 # CMAKE Settings

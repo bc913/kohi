@@ -164,6 +164,13 @@ list(APPEND _RESOURCES_HEADER_FILES
     src/resources/resource_types.h
 )
 
+# ----------
+# Vendor
+# ----------
+set(_VENDOR_HEADER_FILES)
+list(APPEND _VENDOR_HEADER_FILES
+    src/vendor/stb_image.h
+)
 
 target_sources(${PROJECT_NAME}
     PRIVATE
@@ -190,6 +197,7 @@ target_sources(${PROJECT_NAME}
             ${_MEMORY_HEADER_FILES}
             ${_FILESYSTEM_HEADER_FILES}
             ${_RESOURCES_HEADER_FILES}
+            ${_VENDOR_HEADER_FILES}
 )
 
 # ----------
@@ -224,6 +232,11 @@ target_compile_definitions(
         $<$<PLATFORM_ID:Linux>: _POSIX_C_SOURCE=199309L> # CLOCK_MONOTONIC
     #     $<$<PLATFORM_ID:Windows>: KPLATFORM_WINDOWS> # not required since 
 )
+
+# ----------
+# Pre-Build
+# ----------
+GENERATE_TEXTURE_TARGET(${PROJECT_NAME})
 
 # ----------
 # Post-Build
