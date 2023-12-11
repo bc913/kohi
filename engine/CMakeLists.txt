@@ -156,6 +156,14 @@ list(APPEND _MEMORY_SOURCE_FILES
     src/memory/linear_allocator.c
 )
 
+# ----------
+# Resources
+# ----------
+set(_RESOURCES_HEADER_FILES)
+list(APPEND _RESOURCES_HEADER_FILES
+    src/resources/resource_types.h
+)
+
 
 target_sources(${PROJECT_NAME}
     PRIVATE
@@ -181,6 +189,7 @@ target_sources(${PROJECT_NAME}
             ${_MATH_HEADER_FILES}
             ${_MEMORY_HEADER_FILES}
             ${_FILESYSTEM_HEADER_FILES}
+            ${_RESOURCES_HEADER_FILES}
 )
 
 # ----------

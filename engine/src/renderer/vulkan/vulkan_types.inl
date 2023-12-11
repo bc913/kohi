@@ -251,4 +251,9 @@ typedef struct vulkan_context {
 
 } vulkan_context;
 
+typedef struct vulkan_texture_data {
+    vulkan_image image;
+    VkSampler sampler;
+} vulkan_texture_data;
+
 #endif
